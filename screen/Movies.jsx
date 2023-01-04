@@ -104,7 +104,7 @@ const Movies = ({ navigation: { navigate } }) => {
             <UpcomingMovieInfo>
               <UpcomingMovieTitle>바빌론</UpcomingMovieTitle>
               <UpcomingMovieDate>2023-02</UpcomingMovieDate>
-              <UpcomingMovieDesc numberOfLines={8}>
+              <UpcomingMovieDesc numberOfLines={6}>
                 황홀하면서도 위태로운 고대 도시, 바빌론에 비유되던 할리우드. 꿈
                 하나만을 위해 모인 사람들이 이를 쟁취하기 위해 벌이는
                 강렬하면서도 매혹적인 이야기
@@ -122,7 +122,7 @@ const Movies = ({ navigation: { navigate } }) => {
                 앤트맨과 와스프: 퀸텀매니아
               </UpcomingMovieTitle>
               <UpcomingMovieDate>2023-02</UpcomingMovieDate>
-              <UpcomingMovieDesc numberOfLines={8}>
+              <UpcomingMovieDesc numberOfLines={6}>
                 마블 시네마틱 유니버스 페이즈 5의 첫번째 영화이자 앤트맨
                 실사영화 시리즈의 3번째 영화이며 전작 이후 5년 만에 개봉한다.
               </UpcomingMovieDesc>
@@ -137,7 +137,7 @@ const Movies = ({ navigation: { navigate } }) => {
             <UpcomingMovieInfo>
               <UpcomingMovieTitle>다음 소희</UpcomingMovieTitle>
               <UpcomingMovieDate>2023-02</UpcomingMovieDate>
-              <UpcomingMovieDesc numberOfLines={8}>
+              <UpcomingMovieDesc numberOfLines={6}>
                 소희는 고등학교 졸업을 앞두고 인터넷 회사 콜센터에
                 현장실습생으로 취직한다. 소녀는 대기업에 취직했다며 들뜨지만,
                 실상은 기대와 다르다. 노동 착취가 예사로 일어나는 콜센터는
@@ -193,7 +193,7 @@ const HeaderPoster = styled.Image({
 const HeaderMovieInfo = styled.View({
   marginLeft: 10,
   width: "70%",
-  marginTop: -120,
+  marginTop: -140,
 });
 
 const HeaderMovieTitle = styled.Text({
@@ -220,10 +220,11 @@ const Content = styled.View({
   padding: 15,
 });
 
-const Subject = styled.Text({
-  fontSize: 30,
-  fontWeight: "bold",
-});
+const Subject = styled.Text`
+  font-size: 30px;
+  font-weight: bold;
+  color: ${(props) => props.theme.point};
+`;
 
 // Top Rated Movies
 const TopRatedMovieList = styled.ScrollView({
@@ -291,19 +292,22 @@ const UpcomingMovieInfo = styled.View({
   flex: 2,
   marginLeft: 15,
 });
-const UpcomingMovieTitle = styled.Text({
-  fontSize: 26,
-  fontWeight: "bold",
-  marginBottom: 5,
-});
+const UpcomingMovieTitle = styled.Text`
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: ${(props) => props.theme.normal};
+`;
 
-const UpcomingMovieDate = styled.Text({
-  fontSize: 20,
-  marginBottom: 5,
-});
+const UpcomingMovieDate = styled.Text`
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: ${(props) => props.theme.normal};
+`;
 
-const UpcomingMovieDesc = styled.Text({
-  fontSize: 18,
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-});
+const UpcomingMovieDesc = styled.Text`
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${(props) => props.theme.normal};
+`;
