@@ -1,54 +1,112 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import styled, { css } from "@emotion/native";
 import { FontAwesome } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import Swiper from "react-native-swiper";
 
 const Movies = ({ navigation: { navigate } }) => {
   return (
     <ScrollView>
       <Container>
-        <Header>
-          <HeaderBackground />
-          <HeaderScreenshot
-            source={{
-              uri: "https://www.themoviedb.org/t/p/original/A1bWhTFQKkhF1yhSKWosSyzn2Hp.jpg",
-            }}
-          />
-          <HeaderMovie>
-            <HeaderPoster
+        <Swiper height="100%" showsPagination={false} autoplay={true} loop>
+          <SwiperMovie>
+            <HeaderScreenshot
               source={{
-                uri: "https://www.themoviedb.org/t/p/original/N0rskx91Eh6aWjvBybeY6epNic.jpg",
+                uri: "https://www.themoviedb.org/t/p/original/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg",
               }}
             />
-            <HeaderMovieInfo>
-              <HeaderMovieTitle>헤어질 결심</HeaderMovieTitle>
-              <HeaderMovieRating>
-                <FontAwesome name="star" size={16} color="#ffd900" />
-                9.0/10.0
-              </HeaderMovieRating>
-              <HeaderMovieDesc numberOfLines={4}>
-                산 정상에서 추락한 한 남자의 변사 사건. 담당 형사 해준은
-                사망자의 아내 서래와 마주하게 된다. 남편의 죽음 앞에서 특별한
-                동요를 보이지 않는 서래. 경찰은 보통의 유가족과는 다른 서래를
-                용의선상에 올린다. 해준은 사건 당일의 알리바이 탐문과 신문,
-                잠복수사를 통해 서래를 알아가면서 그녀에 대한 관심이 점점
-                커져가는 것을 느낀다. 한편 좀처럼 속을 짐작하기 어려운 서래는
-                상대가 자신을 의심한다는 것을 알면서도 조금의 망설임도 없이
-                해준을 대하는데...
-              </HeaderMovieDesc>
-            </HeaderMovieInfo>
-          </HeaderMovie>
-        </Header>
+            <LinearGradient
+              style={StyleSheet.absoluteFill}
+              colors={["transparent", "rgba(0,0,0,0.2)", "black"]}
+            />
+            <HeaderMovie style={StyleSheet.absoluteFill}>
+              <HeaderPoster
+                source={{
+                  uri: "https://www.themoviedb.org/t/p/original/v5M7vduYnWtdKaBP1jyjD5FyOdA.jpg",
+                }}
+              />
+              <HeaderMovieInfo>
+                <HeaderMovieTitle>아바타: 물의 길</HeaderMovieTitle>
+                <HeaderMovieRating>
+                  <FontAwesome name="star" size={16} color="#ffd900" />
+                  8.0/10.0
+                </HeaderMovieRating>
+                <HeaderMovieDesc numberOfLines={4}>
+                  판도라 행성에서 제이크 설리와 네이티리가 이룬 가족이 겪게 되는
+                  무자비한 위협과 살아남기 위해 떠나야 하는 긴 여정과 전투,
+                  그리고 견뎌내야 할 상처에 대한 이야기를 그렸다. 살아남기 위해
+                  설리 가족이 숲에서
+                </HeaderMovieDesc>
+              </HeaderMovieInfo>
+            </HeaderMovie>
+          </SwiperMovie>
+          <SwiperMovie>
+            <HeaderScreenshot
+              source={{
+                uri: "https://www.themoviedb.org/t/p/original/6fAwExH47DZyvbIGVM86QFjmYZU.jpg",
+              }}
+            />
+            <LinearGradient
+              style={StyleSheet.absoluteFill}
+              colors={["transparent", "rgba(0,0,0,0.2)", "black"]}
+            />
+            <HeaderMovie style={StyleSheet.absoluteFill}>
+              <HeaderPoster
+                source={{
+                  uri: "https://www.themoviedb.org/t/p/original/qxpUTpl8Udu5ZOF6InkjdOzSvyw.jpg",
+                }}
+              />
+              <HeaderMovieInfo>
+                <HeaderMovieTitle>본즈 앤 올</HeaderMovieTitle>
+                <HeaderMovieRating>
+                  <FontAwesome name="star" size={16} color="#ffd900" />
+                  8.0/10.0
+                </HeaderMovieRating>
+                <HeaderMovieDesc numberOfLines={4}>
+                  열여섯 살이 된 매런은 유일한 가족인 아빠마저 곁을 떠나자 한
+                  번도 보지 못한 엄마를 찾는 길에 오른다. 절망 가운데 자신과
+                  같은 식성을 가진 소년 리를 만나고, 동행하는 길 위에서 사랑을
+                  느끼지만 매런에게 사랑은
+                </HeaderMovieDesc>
+              </HeaderMovieInfo>
+            </HeaderMovie>
+          </SwiperMovie>
+          <SwiperMovie>
+            <HeaderScreenshot
+              source={{
+                uri: "https://www.themoviedb.org/t/p/original/A1bWhTFQKkhF1yhSKWosSyzn2Hp.jpg",
+              }}
+            />
+            <LinearGradient
+              style={StyleSheet.absoluteFill}
+              colors={["transparent", "rgba(0,0,0,0.2)", "black"]}
+            />
+            <HeaderMovie style={StyleSheet.absoluteFill}>
+              <HeaderPoster
+                source={{
+                  uri: "https://www.themoviedb.org/t/p/original/N0rskx91Eh6aWjvBybeY6epNic.jpg",
+                }}
+              />
+              <HeaderMovieInfo>
+                <HeaderMovieTitle>헤어질 결심</HeaderMovieTitle>
+                <HeaderMovieRating>
+                  <FontAwesome name="star" size={16} color="#ffd900" />
+                  8.0/10.0
+                </HeaderMovieRating>
+                <HeaderMovieDesc numberOfLines={4}>
+                  산 정상에서 추락한 한 남자의 변사 사건. 담당 형사 해준은
+                  사망자의 아내 서래와 마주하게 된다. 남편의 죽음 앞에서 특별한
+                  동요를 보이지 않는 서래. 경찰은 보통의 유가족과는 다른 서래를
+                  용의선상에 올린다. 해준은
+                </HeaderMovieDesc>
+              </HeaderMovieInfo>
+            </HeaderMovie>
+          </SwiperMovie>
+        </Swiper>
       </Container>
       <Content>
-        <Subject>Top Rated Movies</Subject>
+        <Subject>My Favorite</Subject>
         <TopRatedMovieList horizontal={true}>
           <TopRatedMovie>
             <MoviePoster
@@ -93,7 +151,7 @@ const Movies = ({ navigation: { navigate } }) => {
             </TopRatedMovieInfo>
           </TopRatedMovie>
         </TopRatedMovieList>
-        <Subject>Upcoming Movies</Subject>
+        <Subject>Upcoming</Subject>
         <UpcomingMovieList>
           <UpcomingMovie>
             <UpcomingMoviePoster
@@ -160,40 +218,31 @@ const Container = styled.ScrollView({
 });
 
 // 슬라이더
-const Header = styled.View({
+const SwiperMovie = styled.View({
   flex: 1,
-});
-
-const HeaderBackground = styled.View({
-  backgroundColor: "rgba(0, 0, 0, 0.418)",
-  flex: 1,
-  height: 300,
-  zIndex: 9,
 });
 
 const HeaderScreenshot = styled.Image({
   flex: 1,
-  height: 300,
-  marginTop: -300,
+  height: 280,
 });
 
 const HeaderMovie = styled.View({
   flex: 1,
   flexDirection: "row",
   padding: 10,
-  zIndex: 10,
+  marginTop: 105,
 });
 
 const HeaderPoster = styled.Image({
   width: 100,
   height: 150,
-  marginTop: -170,
 });
 
 const HeaderMovieInfo = styled.View({
   marginLeft: 10,
-  width: "70%",
-  marginTop: -140,
+  width: "75%",
+  marginTop: 30,
 });
 
 const HeaderMovieTitle = styled.Text({

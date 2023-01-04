@@ -3,11 +3,11 @@ import { Text, TouchableOpacity } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
-const One = ({ route: { params }, navigation: { navigate } }) => {
+const One = ({ route: { params }, navigation: { goBack } }) => {
   console.log(params);
   return (
-    <TouchableOpacity onPress={() => navigate("two")}>
-      <Text>One</Text>
+    <TouchableOpacity onPress={() => goBack()}>
+      <Text>돌아가기</Text>
     </TouchableOpacity>
   );
 };
