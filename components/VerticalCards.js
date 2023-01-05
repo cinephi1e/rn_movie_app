@@ -1,10 +1,17 @@
 import styled, { css } from "@emotion/native";
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { getImgPath } from "../util";
 
 const VerticalCards = ({ movie }) => {
+  const { navigate } = useNavigation();
+
   return (
-    <Ranking>
+    <Movie
+      onPress={() =>
+        navigate("Stacks", { screen: "Detail", params: { movieId: movie.id } })
+      }
+    >
       <Poster
         source={{
           uri: getImgPath(movie.poster_path),
@@ -17,13 +24,13 @@ const VerticalCards = ({ movie }) => {
           {movie.vote_average}/10.0
         </Rating>
       </Info>
-    </Ranking>
+    </Movie>
   );
 };
 
 export default VerticalCards;
 
-const Ranking = styled.TouchableOpacity`
+const Movie = styled.TouchableOpacity`
   flex: 1;
 `;
 

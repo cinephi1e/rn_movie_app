@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  ActivityIndicator,
-  RefreshControl,
-  FlatList,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import styled, { css } from "@emotion/native";
 import Swiper from "react-native-swiper";
 import Slide from "../components/Slide";
 import VerticalCards from "../components/VerticalCards";
 import HorizonCards from "../components/HorizonCards";
+import { API_KEY, BASE_URL } from "../util";
 
 const Movies = ({ navigation: { navigate } }) => {
   const [nowPlayings, setNowPlayings] = useState([]);
@@ -18,9 +13,6 @@ const Movies = ({ navigation: { navigate } }) => {
   const [upcoming, setUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const BASE_URL = "https://api.themoviedb.org/3/movie";
-  const API_KEY = "b80fa1fc52e6a74a68a1c3273cae8201";
 
   // 슬라이더 데이터
   const getNowPlayings = async () => {
@@ -109,7 +101,7 @@ const Movies = ({ navigation: { navigate } }) => {
 
 export default Movies;
 
-const Container = styled.ScrollView({
+const Container = styled.TouchableOpacity({
   flex: 1,
 });
 

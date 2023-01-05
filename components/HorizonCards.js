@@ -1,29 +1,33 @@
 import styled, { css } from "@emotion/native";
-import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { getImgPath } from "../util";
 
 const HorizonCards = ({ movie }) => {
+  const { navigate } = useNavigation();
+
   return (
-    <UpcomingMovie>
-      <UpcomingMoviePoster
+    <Movie
+      onPress={() =>
+        navigate("Stacks", { screen: "Detail", params: { movieId: movie.id } })
+      }
+    >
+      <Poster
         source={{
           uri: getImgPath(movie.poster_path),
         }}
       />
-      <UpcomingMovieInfo>
-        <UpcomingMovieTitle numberOfLines={1}>{movie.title}</UpcomingMovieTitle>
-        <UpcomingMovieDate>{movie.release_date}</UpcomingMovieDate>
-        <UpcomingMovieDesc numberOfLines={6}>
-          {movie.overview}
-        </UpcomingMovieDesc>
-      </UpcomingMovieInfo>
-    </UpcomingMovie>
+      <Info>
+        <Title numberOfLines={1}>{movie.title}</Title>
+        <Date>{movie.release_date}</Date>
+        <Desc numberOfLines={6}>{movie.overview}</Desc>
+      </Info>
+    </Movie>
   );
 };
 
 export default HorizonCards;
 
-const UpcomingMovie = styled.TouchableOpacity`
+const Movie = styled.TouchableOpacity`
   flex: 1;
   flex-direction: row;
   width: 90%;
@@ -32,34 +36,35 @@ const UpcomingMovie = styled.TouchableOpacity`
   border-width: 0 0 1px 0;
   border-color: ${(props) => props.theme.normal};
   padding: 7px 0 20px 0;
+  height: 200px;
 `;
 
-const UpcomingMoviePoster = styled.Image`
+const Poster = styled.Image`
   width: 120px;
   height: 180px;
   border-radius: 7px;
 `;
 
-const UpcomingMovieInfo = styled.View`
-  flex: 2;
+const Info = styled.View`
+  flex: 1;
   margin-left: 15px;
   justify-content: center;
 `;
 
-const UpcomingMovieTitle = styled.Text`
+const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 5px;
   color: ${(props) => props.theme.normal};
 `;
 
-const UpcomingMovieDate = styled.Text`
+const Date = styled.Text`
   font-size: 18px;
   margin-bottom: 5px;
   color: ${(props) => props.theme.normal};
 `;
 
-const UpcomingMovieDesc = styled.Text`
+const Desc = styled.Text`
   font-size: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
