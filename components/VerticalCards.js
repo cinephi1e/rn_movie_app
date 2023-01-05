@@ -25,7 +25,6 @@ export default VerticalCards;
 
 const Ranking = styled.TouchableOpacity`
   flex: 1;
-  margin-right: 10px;
 `;
 
 const Poster = styled.Image`

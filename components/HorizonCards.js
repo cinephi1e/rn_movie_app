@@ -26,7 +26,12 @@ export default HorizonCards;
 const UpcomingMovie = styled.TouchableOpacity`
   flex: 1;
   flex-direction: row;
-  margin-bottom: 20px;
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid;
+  border-width: 0 0 1px 0;
+  border-color: ${(props) => props.theme.normal};
+  padding: 7px 0 20px 0;
 `;
 
 const UpcomingMoviePoster = styled.Image`

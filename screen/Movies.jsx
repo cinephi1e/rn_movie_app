@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  FlatList,
+  View,
 } from "react-native";
 import styled, { css } from "@emotion/native";
-import { FontAwesome } from "@expo/vector-icons";
-import { getImgPath } from "../util";
 import Swiper from "react-native-swiper";
 import Slide from "../components/Slide";
 import VerticalCards from "../components/VerticalCards";
@@ -44,7 +43,7 @@ const Movies = ({ navigation: { navigate } }) => {
     const { results } = await fetch(
       `${BASE_URL}/upcoming?api_key=${API_KEY}&language=ko&page=1`
     ).then((res) => res.json());
-    setUpcoming(results);
+    setUpcoming(results.filter((item) => item.overview));
   };
 
   const getData = async () => {
@@ -71,38 +70,40 @@ const Movies = ({ navigation: { navigate } }) => {
   }
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+    <FlatList
+      refreshing={isRefreshing}
+      onRefresh={onRefresh}
+      ListHeaderComponent={
+        <>
+          <Container>
+            <Swiper height="100%" showsPagination={false} autoplay loop>
+              {nowPlayings
+                .filter((movie) => movie.overview)
+                .map((movie) => (
+                  <Slide key={movie.id} movie={movie} />
+                ))}
+            </Swiper>
+          </Container>
+          <Content>
+            <Subject>Ranking</Subject>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingVertical: 7 }}
+              data={ranking}
+              ItemSeparatorComponent={<View style={{ width: 10 }} />}
+              renderItem={({ item }) => <VerticalCards movie={item} />}
+              keyExtractor={(item) => item.id}
+            />
+            <Subject>Upcoming</Subject>
+          </Content>
+        </>
       }
-    >
-      <Container>
-        <Swiper height="100%" showsPagination={false} autoplay loop>
-          {nowPlayings
-            .filter((movie) => movie.overview)
-            .map((movie) => (
-              <Slide key={movie.id} movie={movie} />
-            ))}
-        </Swiper>
-      </Container>
-      <Content>
-        <Subject>Ranking</Subject>
-        <TopRatedMovieList horizontal={true}>
-          {ranking.map((movie) => (
-            <VerticalCards key={movie.id} movie={movie} />
-          ))}
-        </TopRatedMovieList>
-
-        <Subject>Upcoming</Subject>
-        <UpcomingMovieList>
-          {upcoming
-            .filter((movie) => movie.overview)
-            .map((movie) => (
-              <HorizonCards key={movie.id} movie={movie} />
-            ))}
-        </UpcomingMovieList>
-      </Content>
-    </ScrollView>
+      data={upcoming}
+      renderItem={({ item }) => <HorizonCards movie={item} />}
+      keyExtractor={(item) => item.id}
+      ItemSeparatorComponent={<View style={{ height: 15 }} />}
+    />
   );
 };
 
@@ -118,7 +119,6 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-// 내용
 const Content = styled.View({
   flex: 2,
   padding: 15,
@@ -127,20 +127,6 @@ const Content = styled.View({
 const Subject = styled.Text`
   font-size: 30px;
   font-weight: bold;
+  margin-top: 10px;
   color: ${(props) => props.theme.point};
 `;
-
-// Top Rated Movies
-const TopRatedMovieList = styled.ScrollView({
-  flex: 1,
-  flexDirection: "row",
-  marginTop: 10,
-  marginBottom: 35,
-});
-
-// Upcoming Movies
-const UpcomingMovieList = styled.ScrollView({
-  flex: 1,
-  marginTop: 10,
-  marginBottom: 35,
-});

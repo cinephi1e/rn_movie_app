@@ -17,7 +17,3 @@ export const lightTheme = {
   normal: "#000000",
   verticalInfo: "#ecf0f1",
 };
-
-// 1. db에 저장
-// 2. state 갱신
-// db에 넣는 과정이 필요하기 때문에 미들웨어(thunk)를 사용하는 것
