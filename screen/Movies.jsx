@@ -5,55 +5,41 @@ import Swiper from "react-native-swiper";
 import Slide from "../components/Slide";
 import VerticalCards from "../components/VerticalCards";
 import HorizonCards from "../components/HorizonCards";
-import { API_KEY, BASE_URL } from "../util";
+import { useQuery, useQueryClient } from "react-query";
+import { getNowPlayings, getRanking, getUpcoming } from "../api";
 
 const Movies = ({ navigation: { navigate } }) => {
-  const [nowPlayings, setNowPlayings] = useState([]);
-  const [ranking, setRanking] = useState([]);
-  const [upcoming, setUpcoming] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const queryClient = useQueryClient();
 
-  // 슬라이더 데이터
-  const getNowPlayings = async () => {
-    const { results } = await fetch(
-      `${BASE_URL}/now_playing?api_key=${API_KEY}&language=ko&page=1`
-    ).then((res) => res.json());
-    setNowPlayings(results);
-  };
+  const {
+    data: nowPlayingData,
+    isLoading: isLoadingNP,
+    // refetch: refetchNP,
+  } = useQuery(["Movies", "NowPlaying"], getNowPlayings);
 
-  // Ranking 데이터
-  const getRanking = async () => {
-    const { results } = await fetch(
-      `${BASE_URL}/top_rated?api_key=${API_KEY}&language=ko&page=1`
-    ).then((res) => res.json());
-    setRanking(results);
-  };
+  const {
+    data: rankingData,
+    isLoading: isLoadingRK,
+    // refetch: refetchRK,
+  } = useQuery(["Movies", "Ranking"], getRanking);
 
-  // Upcoming 데이터
-  const getUpcoming = async () => {
-    const { results } = await fetch(
-      `${BASE_URL}/upcoming?api_key=${API_KEY}&language=ko&page=1`
-    ).then((res) => res.json());
-    setUpcoming(results.filter((item) => item.overview));
-  };
-
-  const getData = async () => {
-    await Promise.all([getNowPlayings(), getRanking(), getUpcoming()]);
-    setLoading(false);
-  };
+  const {
+    data: upcomingData,
+    isLoading: isLoadingUC,
+    // refetch: refetchUC,
+  } = useQuery(["Movies", "Upcoming"], getUpcoming);
 
   const onRefresh = async () => {
     setIsRefreshing(true);
-    await getData();
+    // await Promise.all([refetchNP(), refetchRK(), refetchUC()]);
+    await queryClient.refetchQueries(["Movies"]);
     setIsRefreshing(false);
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const isLoading = isLoadingNP || isLoadingRK || isLoadingUC;
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Loader>
         <ActivityIndicator />
@@ -69,7 +55,7 @@ const Movies = ({ navigation: { navigate } }) => {
         <>
           <Container>
             <Swiper height="100%" showsPagination={false} autoplay loop>
-              {nowPlayings
+              {nowPlayingData.results
                 .filter((movie) => movie.overview)
                 .map((movie) => (
                   <Slide key={movie.id} movie={movie} />
@@ -82,7 +68,7 @@ const Movies = ({ navigation: { navigate } }) => {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 7 }}
-              data={ranking}
+              data={rankingData.results}
               ItemSeparatorComponent={<View style={{ width: 10 }} />}
               renderItem={({ item }) => <VerticalCards movie={item} />}
               keyExtractor={(item) => item.id}
@@ -91,7 +77,7 @@ const Movies = ({ navigation: { navigate } }) => {
           </Content>
         </>
       }
-      data={upcoming}
+      data={upcomingData.results}
       renderItem={({ item }) => <HorizonCards movie={item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={<View style={{ height: 15 }} />}

@@ -1,11 +1,13 @@
 import { StyleSheet, ActivityIndicator, Linking } from "react-native";
 import styled, { css } from "@emotion/native";
 import { useEffect, useState } from "react";
-import { API_KEY, BASE_URL, getImgPath, SCREEN_HEIGHT } from "../util";
+import { getImgPath, SCREEN_HEIGHT } from "../util";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";
 import useColorScheme from "react-native/Libraries/Utilities/useColorScheme";
 import { DARK_NORMAL, LIGHT_NORMAL } from "../colors";
+import { useQuery } from "react-query";
+import { getMovies } from "../api";
 
 const Detail = ({
   route: {
@@ -14,28 +16,13 @@ const Detail = ({
 }) => {
   const isDark = useColorScheme() === "dark";
 
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const getMovies = async () => {
-    const results = await fetch(
-      `${BASE_URL}/${movieId}?api_key=${API_KEY}&language=ko&append_to_response=videos`
-    ).then((res) => res.json());
-
-    setMovies(results);
-    setLoading(false);
-  };
+  const { data: movies, isLoading } = useQuery(["Detail", movieId], getMovies);
 
   const openYoutube = async (key) => {
-    const url = `https://www.youtube.com/watch?v=${key}`;
-    await Linking.openURL(url);
+    await Linking.openURL(`https://www.youtube.com/watch?v=${key}`);
   };
 
-  useEffect(() => {
-    getMovies();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <Loader>
         <ActivityIndicator />
@@ -56,8 +43,7 @@ const Detail = ({
         />
         <Info>
           <Title>
-            {movies.title}
-            {/* {movies.release_date.slice(0, 4)} */}
+            {movies.title}({movies.release_date.slice(0, 4)})
           </Title>
           <Desc numberOfLines={4}>{movies.overview}</Desc>
         </Info>

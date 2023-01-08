@@ -47,8 +47,7 @@ const Poster = styled.Image`
 
 const Info = styled.View`
   flex: 1;
-  margin-left: 15px;
-  justify-content: center;
+  margin: 1px 0 0 15px;
 `;
 
 const Title = styled.Text`
