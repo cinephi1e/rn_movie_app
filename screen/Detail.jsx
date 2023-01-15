@@ -1,6 +1,5 @@
 import { StyleSheet, ActivityIndicator, Linking } from "react-native";
 import styled, { css } from "@emotion/native";
-import { useEffect, useState } from "react";
 import { getImgPath, SCREEN_HEIGHT } from "../util";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";

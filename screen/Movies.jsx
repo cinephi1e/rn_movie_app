@@ -1,38 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View, Alert } from "react-native";
 import styled, { css } from "@emotion/native";
 import Swiper from "react-native-swiper";
 import Slide from "../components/Slide";
 import VerticalCards from "../components/VerticalCards";
 import HorizonCards from "../components/HorizonCards";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient, useInfiniteQuery } from "react-query";
 import { getNowPlayings, getRanking, getUpcoming } from "../api";
 
 const Movies = ({ navigation: { navigate } }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const queryClient = useQueryClient();
 
-  const {
-    data: nowPlayingData,
-    isLoading: isLoadingNP,
-    // refetch: refetchNP,
-  } = useQuery(["Movies", "NowPlaying"], getNowPlayings);
+  const { data: nowPlayingData, isLoading: isLoadingNP } = useQuery(
+    ["Movies", "NowPlaying"],
+    getNowPlayings
+  );
 
-  const {
-    data: rankingData,
-    isLoading: isLoadingRK,
-    // refetch: refetchRK,
-  } = useQuery(["Movies", "Ranking"], getRanking);
+  const { data: rankingData, isLoading: isLoadingRK } = useInfiniteQuery(
+    ["Movies", "Ranking"],
+    getRanking,
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.page < lastPage.total_pages) {
+          return lastPage.page + 1;
+        }
+      },
+    }
+  );
 
   const {
     data: upcomingData,
     isLoading: isLoadingUC,
-    // refetch: refetchUC,
-  } = useQuery(["Movies", "Upcoming"], getUpcoming);
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(["Movies", "Upcoming"], getUpcoming, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+  });
+
+  // 무한스크롤
+  const fetchMore = async () => {
+    if (hasNextPage) {
+      await fetchNextPage();
+    }
+  };
 
   const onRefresh = async () => {
     setIsRefreshing(true);
-    // await Promise.all([refetchNP(), refetchRK(), refetchUC()]);
     await queryClient.refetchQueries(["Movies"]);
     setIsRefreshing(false);
   };
@@ -51,6 +69,8 @@ const Movies = ({ navigation: { navigate } }) => {
     <FlatList
       refreshing={isRefreshing}
       onRefresh={onRefresh}
+      onEndReached={fetchMore}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={
         <>
           <Container>
@@ -68,16 +88,18 @@ const Movies = ({ navigation: { navigate } }) => {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 7 }}
-              data={rankingData.results}
+              data={rankingData.pages.map((page) => page.results).flat()}
               ItemSeparatorComponent={<View style={{ width: 10 }} />}
               renderItem={({ item }) => <VerticalCards movie={item} />}
               keyExtractor={(item) => item.id}
+              onEndReached={fetchMore}
+              onEndReachedThreshold={0.5}
             />
             <Subject>Upcoming</Subject>
           </Content>
         </>
       }
-      data={upcomingData.results}
+      data={upcomingData.pages.map((page) => page.results).flat()}
       renderItem={({ item }) => <HorizonCards movie={item} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={<View style={{ height: 15 }} />}
